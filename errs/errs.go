@@ -63,17 +63,13 @@ func NewWithOption(opt ...Option) error {
 }
 
 // Wrap return an error annotating err with a stack trace
-func Wrap(err error, opt ...Option) error {
-	res := &fundamental{
+func Wrap(err error, msg string) error {
+	return &fundamental{
 		code:  GetCode(err),
-		msg:   err.Error(),
+		msg:   fmt.Sprintf("%s: %s", msg, err.Error()),
 		data:  GetData(err),
 		stack: callers(),
 	}
-	for _, o := range opt {
-		o(res)
-	}
-	return res
 }
 
 // Option error option
