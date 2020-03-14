@@ -1,7 +1,9 @@
 package mysql
 
 import (
+	"errors"
 	"fmt"
+	"sync"
 
 	"github.com/astaxie/beego"
 	_ "github.com/go-sql-driver/mysql" //gorm mysql驱动
@@ -11,6 +13,7 @@ import (
 var (
 	connects struct {
 		store map[string]*gorm.DB
+		sync.RWMutex
 	}
 )
 
@@ -27,10 +30,10 @@ type Conf struct {
 // 默认单库配置
 func defaultConf() Conf {
 	return Conf{
-		User:     beego.AppConfig.String("MysqlUser"),
-		Password: beego.AppConfig.String("MysqlPassword"),
-		Host:     beego.AppConfig.String("MysqlHost"),
-		DbName:   beego.AppConfig.String("MysqlDbName"),
+		User:     beego.AppConfig.DefaultString("MysqlUser", "root"),
+		Password: beego.AppConfig.DefaultString("MysqlPassword", "123456"),
+		Host:     beego.AppConfig.DefaultString("MysqlHost", "127.0.0.1:3306"),
+		DbName:   beego.AppConfig.DefaultString("MysqlDbName", "test"),
 		MaxConn:  beego.AppConfig.DefaultInt("MysqlMaxConn", 1000),
 		MaxIdle:  beego.AppConfig.DefaultInt("MysqlIdleConn", 20),
 	}
@@ -42,18 +45,25 @@ func Init(configs ...Conf) {
 		config := defaultConf()
 		configs = append(configs, config)
 	}
+	connects.Lock()
 	connects.store = make(map[string]*gorm.DB)
+	connects.Unlock()
 	for _, conf := range configs {
-		db, err := conn(conf)
+		db, err := connect(conf)
 		if err != nil {
 			panic(err)
 		}
+		connects.Lock()
 		connects.store[conf.DbName] = db
+		connects.Unlock()
 	}
 }
 
 // 建立链接
-func conn(conf Conf) (*gorm.DB, error) {
+func connect(conf Conf) (*gorm.DB, error) {
+	if conf.DbName == "" || conf.Host == "" {
+		return nil, errors.New("connect params is empty")
+	}
 	dsn := fmt.Sprintf("%v:%v@tcp(%v)/%v?charset=utf8mb4&parseTime=True&loc=Local",
 		conf.User, conf.Password, conf.Host, conf.DbName)
 	db, err := gorm.Open("mysql", dsn)

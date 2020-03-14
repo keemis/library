@@ -30,6 +30,9 @@ func New(options ...Option) Orm {
 
 // DB 返回一个DB对象
 func (o Orm) DB(DbName ...string) *gorm.DB {
+	if len(connects.store) == 0 {
+		return nil
+	}
 	db := &gorm.DB{}
 	lens := len(DbName)
 	if lens == 0 {
@@ -37,7 +40,13 @@ func (o Orm) DB(DbName ...string) *gorm.DB {
 			db = v
 		}
 	} else if lens == 1 {
-		tmp, ok := connects.store[DbName[0]]
+		name := DbName[0]
+		if name == "" {
+			return nil
+		}
+		connects.RLock()
+		tmp, ok := connects.store[name]
+		connects.RUnlock()
 		if !ok {
 			return nil
 		}
