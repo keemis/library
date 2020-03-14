@@ -14,10 +14,6 @@ import (
 // request 设置Request
 func (u Curl) request(url string, params map[string]string, typ requestType) *Curl {
 	req := u
-	req.BeegoHTTPRequest.Retries(2)
-	req.BeegoHTTPRequest.SetTimeout(2*time.Second, 3*time.Second)
-	req.BeegoHTTPRequest.SetTLSClientConfig(&tls.Config{InsecureSkipVerify: u.tlsSecure})
-	req.BeegoHTTPRequest.Header("User-Agent", "curl/9.9.9")
 	url = BuildURL(url, params)
 	if typ == typeGet {
 		req.used = true
@@ -28,6 +24,10 @@ func (u Curl) request(url string, params map[string]string, typ requestType) *Cu
 		req.log.Debug("curl >>> Post: %v", url)
 		req.BeegoHTTPRequest = httplib.Post(url)
 	}
+	req.BeegoHTTPRequest.Retries(2)
+	req.BeegoHTTPRequest.SetTimeout(2*time.Second, 3*time.Second)
+	req.BeegoHTTPRequest.SetTLSClientConfig(&tls.Config{InsecureSkipVerify: u.tlsSecure})
+	req.BeegoHTTPRequest.Header("User-Agent", "curl/9.9.9")
 	return &req
 }
 
