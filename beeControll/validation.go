@@ -1,7 +1,7 @@
 package beeControll
 
 import (
-	"encoding/json"
+	json "github.com/json-iterator/go"
 	"reflect"
 
 	"github.com/keemis/library/validation"
