@@ -37,7 +37,7 @@ func (u *BaseController) Finish() {
 // logRequest 记录请求
 func (u *BaseController) logRequest() {
 	if u.Ctx.Input.Context.Request.Form == nil {
-		u.Ctx.Input.Context.Request.ParseForm()
+		_ = u.Ctx.Input.Context.Request.ParseForm()
 	}
 	u.log.Debug("request form: ", u.Ctx.Input.Context.Request.Form)
 	u.log.Debug("request body: ", string(u.Ctx.Input.RequestBody))
