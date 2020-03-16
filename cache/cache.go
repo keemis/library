@@ -6,7 +6,14 @@ import (
 	"github.com/coocood/freecache"
 )
 
-var Client *freecache.Cache
+var (
+	client *freecache.Cache
+)
+
+// Client return client
+func Client() *freecache.Cache {
+	return client
+}
 
 // Init 初始化Cache
 func Init(cacheSize int) {
@@ -19,5 +26,5 @@ func Init(cacheSize int) {
 	if cacheSize > 50*1024*1024 {
 		debug.SetGCPercent(20)
 	}
-	Client = freecache.NewCache(cacheSize)
+	client = freecache.NewCache(cacheSize)
 }
