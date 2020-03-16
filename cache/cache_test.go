@@ -4,7 +4,8 @@ import (
 	"testing"
 )
 
-func TestInit(t *testing.T) {
+func TestRun(t *testing.T) {
+	// init
 	Init(5 * 1024 * 1024)
 
 	// set
