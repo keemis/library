@@ -39,8 +39,8 @@ func OptData(data interface{}) Option {
 }
 
 // apiSuccess RPC返回正确
-func (u *BaseController) apiSuccess(data interface{}) {
-	u.apiOutput(apiResult{
+func (u *BaseController) ApiSuccess(data interface{}) {
+	u.output(apiResult{
 		Code: 0,
 		Msg:  "success",
 		Data: data,
@@ -48,8 +48,8 @@ func (u *BaseController) apiSuccess(data interface{}) {
 }
 
 // apiError RPC返回错误
-func (u *BaseController) apiError(msg string) {
-	u.apiOutput(apiResult{
+func (u *BaseController) ApiError(msg string) {
+	u.output(apiResult{
 		Code: -1000,
 		Msg:  msg,
 		Data: nil,
@@ -57,12 +57,12 @@ func (u *BaseController) apiError(msg string) {
 }
 
 // apiErrorf RPC返回错误
-func (u *BaseController) apiErrorf(format string, a ...interface{}) {
-	u.apiError(fmt.Sprintf(format, a))
+func (u *BaseController) ApiErrorf(format string, a ...interface{}) {
+	u.ApiError(fmt.Sprintf(format, a))
 }
 
 // apiResult RPC返回
-func (u *BaseController) apiResult(opt ...Option) {
+func (u *BaseController) ApiResult(opt ...Option) {
 	res := apiResult{
 		Code: 0,
 		Msg:  "success",
@@ -71,12 +71,12 @@ func (u *BaseController) apiResult(opt ...Option) {
 	for _, o := range opt {
 		o(&res)
 	}
-	u.apiOutput(res)
+	u.output(res)
 }
 
 // apiStruct RPC返回Error (github.com/keemis/library/errs)
-func (u *BaseController) apiStruct(err error) {
-	u.apiOutput(apiResult{
+func (u *BaseController) ApiStruct(err error) {
+	u.output(apiResult{
 		Code: errs.GetCode(err),
 		Msg:  errs.GetMsg(err),
 		Data: errs.GetData(err),
@@ -84,7 +84,7 @@ func (u *BaseController) apiStruct(err error) {
 }
 
 // apiOutput 返回结果
-func (u *BaseController) apiOutput(data apiResult) {
+func (u *BaseController) output(data apiResult) {
 	if data.Code != 0 {
 		if byt, err := json.Marshal(data); err == nil {
 			u.log.Warn("rpc response: %s", string(byt))
