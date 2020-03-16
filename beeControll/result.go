@@ -2,6 +2,7 @@ package beeControll
 
 import (
 	"encoding/json"
+	"fmt"
 
 	"github.com/keemis/library/errs"
 )
@@ -47,12 +48,17 @@ func (u *BaseController) apiSuccess(data interface{}) {
 }
 
 // apiError RPC返回错误
-func (u *BaseController) apiError(data interface{}) {
+func (u *BaseController) apiError(msg string) {
 	u.apiOutput(apiResult{
 		Code: -1000,
-		Msg:  "error",
-		Data: data,
+		Msg:  msg,
+		Data: nil,
 	})
+}
+
+// apiErrorf RPC返回错误
+func (u *BaseController) apiErrorf(format string, a ...interface{}) {
+	u.apiError(fmt.Sprintf(format, a))
 }
 
 // apiResult RPC返回
