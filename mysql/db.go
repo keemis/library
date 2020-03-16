@@ -12,8 +12,8 @@ type Orm struct {
 // Option 配置选项
 type Option func(*Orm)
 
-// SetLogger 设置日志对象
-func SetLogger(log logs.Logger) Option {
+// OptLogger 设置日志对象
+func OptLogger(log logs.Logger) Option {
 	return func(orm *Orm) {
 		orm.log = log
 	}

@@ -16,15 +16,15 @@ type Curl struct {
 // Option 配置选项
 type Option func(*Curl)
 
-// SetLogger 设置日志对象
-func SetLogger(log logs.Logger) Option {
+// OptLogger 设置日志对象
+func OptLogger(log logs.Logger) Option {
 	return func(curl *Curl) {
 		curl.log = log
 	}
 }
 
-// SetTlsSecure 设置是否验证TLS证书
-func SetTlsSecure(tlsSecure bool) Option {
+// OptTlsSecure 设置是否验证TLS证书
+func OptTlsSecure(tlsSecure bool) Option {
 	return func(curl *Curl) {
 		curl.tlsSecure = tlsSecure
 	}

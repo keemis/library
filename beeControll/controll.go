@@ -6,8 +6,8 @@ import (
 )
 
 type ControllerItf interface {
-	Before()
-	After()
+	Before() // 执行之前（选择实现）
+	After()  // 执行之后（选择实现）
 }
 
 // BaseController 基础控制器
@@ -17,18 +17,17 @@ type BaseController struct {
 	bodyStore map[string]interface{}
 }
 
-// Prepare 方法之前
+// Prepare 执行之前
 func (u *BaseController) Prepare() {
 	u.log = logs.New()
 	u.logRequest()
 	u.resolveBody()
-
 	if app, ok := u.AppController.(ControllerItf); ok {
 		app.Before()
 	}
 }
 
-// Finish 方法之后
+// Finish 执行之后
 func (u *BaseController) Finish() {
 	if app, ok := u.AppController.(ControllerItf); ok {
 		app.After()
