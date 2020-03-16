@@ -7,10 +7,13 @@ import (
 
 // resolveBody 解析application/json参数
 func (u *BaseController) resolveBody() {
+	u.bodyStore = make(map[string]interface{})
 	if u.Ctx.Request.Method != "POST" {
 		return
 	}
-	u.bodyStore = make(map[string]interface{})
+	if len(u.Ctx.Input.RequestBody) <= 2 {
+		return
+	}
 	if err := json.Unmarshal(u.Ctx.Input.RequestBody, &u.bodyStore); err != nil {
 		return
 	}
