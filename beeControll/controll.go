@@ -1,32 +1,33 @@
-package controll
+package beeControll
 
 import (
-	"fmt"
-
 	"github.com/astaxie/beego"
+	"github.com/keemis/library/logs"
 )
 
 type ControllerItf interface {
 	Before()
+	After()
 }
 
 // BaseController 基础控制器
 type BaseController struct {
 	beego.Controller
+	log logs.Logger
 }
 
-// Prepare 初始化请求
+// Prepare 方法之前
 func (u *BaseController) Prepare() {
-
-	fmt.Println("00000000000")
+	u.log = logs.New()
 
 	if app, ok := u.AppController.(ControllerItf); ok {
 		app.Before()
 	}
 }
 
-func (u *BaseController) Test() {
-
-	fmt.Println("1111111")
-
+// Finish 方法之后
+func (u *BaseController) Finish() {
+	if app, ok := u.AppController.(ControllerItf); ok {
+		app.After()
+	}
 }

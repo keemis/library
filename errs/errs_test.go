@@ -23,6 +23,6 @@ func TestUse(t *testing.T) {
 	// 高级用法
 	err = NewWithOption(OptCode(501), OptMsg("two high-level exceptions"), OptData("go go go"))
 	t.Logf("err: %v ", err)
-	t.Logf("code: %v , msg: %v, data: %v", GetCode(err), err, GetData(err))
+	t.Logf("code: %v , msg: %v, data: %v", GetCode(err), GetMsg(err), GetData(err))
 	t.Logf("stack: %v", GetStack(err))
 }

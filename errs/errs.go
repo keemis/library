@@ -97,6 +97,11 @@ func OptMsg(msg string) Option {
 	}
 }
 
+// GetMsg get error option message
+func GetMsg(e error) string {
+	return e.Error()
+}
+
 // OptData set error data
 func OptData(data interface{}) Option {
 	return func(o *fundamental) {
