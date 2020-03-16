@@ -87,7 +87,7 @@ func (u *BaseController) ApiStruct(err error) {
 func (u *BaseController) output(data apiResult) {
 	if data.Code != 0 {
 		if byt, err := json.Marshal(data); err == nil {
-			u.log.Warn("rpc response: %s", string(byt))
+			u.Log.Warn("rpc response: %s", string(byt))
 		}
 	}
 	u.Ctx.Output.Header("Server", "xService")

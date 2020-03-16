@@ -12,7 +12,6 @@ import (
 type Logger struct {
 	traceID       string
 	funcCallDepth int
-	used          bool
 }
 
 // Option 配置选项
@@ -36,7 +35,6 @@ func SetFuncCallDepth(depth int) Option {
 func New(options ...Option) Logger {
 	logger := Logger{
 		funcCallDepth: 3,
-		used:          true,
 	}
 	for _, option := range options {
 		option(&logger)
@@ -49,49 +47,31 @@ func New(options ...Option) Logger {
 
 // Critical [C] 2
 func (u Logger) Critical(f interface{}, v ...interface{}) {
-	if !u.used {
-		return
-	}
 	logger.Critical(u.formatLog(f, v...))
 }
 
 // Error [E] 3
 func (u Logger) Error(f interface{}, v ...interface{}) {
-	if !u.used {
-		return
-	}
 	logger.Error(u.formatLog(f, v...))
 }
 
 // Warn [W] 4
 func (u Logger) Warn(f interface{}, v ...interface{}) {
-	if !u.used {
-		return
-	}
 	logger.Warn(u.formatLog(f, v...))
 }
 
 // Notice [N] 5
 func (u Logger) Notice(f interface{}, v ...interface{}) {
-	if !u.used {
-		return
-	}
 	logger.Notice(u.formatLog(f, v...))
 }
 
 // Info [I] 6
 func (u Logger) Info(f interface{}, v ...interface{}) {
-	if !u.used {
-		return
-	}
 	logger.Info(u.formatLog(f, v...))
 }
 
 // Debug [D] 7
 func (u Logger) Debug(f interface{}, v ...interface{}) {
-	if !u.used {
-		return
-	}
 	logger.Debug(u.formatLog(f, v...))
 }
 
