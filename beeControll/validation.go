@@ -1,8 +1,12 @@
 package beeControll
 
 import (
-	json "github.com/json-iterator/go"
+	"encoding/json"
 	"reflect"
+	"time"
+
+	jsoniter "github.com/json-iterator/go"
+	"github.com/json-iterator/go/extra"
 
 	"github.com/keemis/library/validation"
 )
@@ -33,7 +37,10 @@ func (u *BaseController) ValidQuery(po interface{}) {
 	if len(byt) <= 2 {
 		return
 	}
-	if err := json.Unmarshal(byt, po); err != nil {
+	// use jsoniter ext
+	extra.RegisterFuzzyDecoders()
+	extra.RegisterTimeAsInt64Codec(time.Second)
+	if err := jsoniter.Unmarshal(byt, po); err != nil {
 		u.ApiErrorf("failed to decode request: %v", err)
 	}
 	valid := validation.Validation{}
@@ -54,7 +61,10 @@ func (u *BaseController) ValidBody(po interface{}) {
 	if len(body) <= 2 {
 		return
 	}
-	if err := json.Unmarshal(body, po); err != nil {
+	// use jsoniter ext
+	extra.RegisterFuzzyDecoders()
+	extra.RegisterTimeAsInt64Codec(time.Second)
+	if err := jsoniter.Unmarshal(body, po); err != nil {
 		u.ApiErrorf("failed to decode request: %v", err)
 	}
 	valid := validation.Validation{}
