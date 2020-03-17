@@ -7,42 +7,31 @@ import (
 
 	jsoniter "github.com/json-iterator/go"
 	"github.com/json-iterator/go/extra"
+	"github.com/pkg/errors"
 
 	"github.com/keemis/library/validation"
 )
 
-// ValidQuery 校验、解析Query到Po
-func (u *BaseController) ValidQuery(po interface{}) {
+// ValidForm 校验、解析Query、Form、Body到Po
+func (u *BaseController) ValidForm(po interface{}) {
 	rv := reflect.ValueOf(po)
 	if rv.Kind() != reflect.Ptr || rv.IsNil() {
-		u.ApiError("ValidQuery func params po must be ptr")
+		u.ApiError("param must be ptr")
 	}
-	if u.Ctx.Input.Context.Request.Form == nil {
-		if err := u.Ctx.Input.Context.Request.ParseForm(); err != nil {
-			u.ApiErrorf("failed to parse form: %v", err)
-		}
-	}
-	tmp := make(map[string]string)
-	for k, vs := range u.Ctx.Input.Context.Request.Form {
-		v := ""
-		if len(vs) > 0 {
-			v = vs[0]
-		}
-		tmp[k] = v
-	}
-	byt, err := json.Marshal(tmp)
+	// parse
+	byts, err := u.parseFormBody()
 	if err != nil {
-		u.ApiErrorf("failed to encode query: %v", err)
-	}
-	if len(byt) <= 2 {
-		return
+		u.ApiError(err.Error())
 	}
 	// use jsoniter ext
-	extra.RegisterFuzzyDecoders()
-	extra.RegisterTimeAsInt64Codec(time.Second)
-	if err := jsoniter.Unmarshal(byt, po); err != nil {
-		u.ApiErrorf("failed to decode request: %v", err)
+	if len(byts) > 2 {
+		extra.RegisterFuzzyDecoders()
+		extra.RegisterTimeAsInt64Codec(time.Second)
+		if err := jsoniter.Unmarshal(byts, po); err != nil {
+			u.ApiErrorf("failed to decode request: %v", err)
+		}
 	}
+	// valid
 	valid := validation.Validation{}
 	if ok, err := valid.Valid(po); err != nil {
 		u.ApiErrorf("failed to valid request: %v", err)
@@ -51,26 +40,32 @@ func (u *BaseController) ValidQuery(po interface{}) {
 	}
 }
 
-// ValidBody 校验、解析Body到Po
-func (u *BaseController) ValidBody(po interface{}) {
-	rv := reflect.ValueOf(po)
-	if rv.Kind() != reflect.Ptr || rv.IsNil() {
-		u.ApiError("validBody func params po must be ptr")
+// parseFormBody 解析Query、Form、Body
+func (u *BaseController) parseFormBody() ([]byte, error) {
+	// ParseForm
+	if u.Ctx.Input.Context.Request.Form == nil {
+		_ = u.Ctx.Input.Context.Request.ParseForm()
 	}
-	body := u.Ctx.Input.RequestBody
-	if len(body) <= 2 {
-		return
+	// ParseBody
+	bodyMap := make(map[string]interface{})
+	if len(u.Ctx.Input.RequestBody) > 2 {
+		_ = jsoniter.Unmarshal(u.Ctx.Input.RequestBody, &bodyMap)
 	}
-	// use jsoniter ext
-	extra.RegisterFuzzyDecoders()
-	extra.RegisterTimeAsInt64Codec(time.Second)
-	if err := jsoniter.Unmarshal(body, po); err != nil {
-		u.ApiErrorf("failed to decode request: %v", err)
+	// form + body
+	tmp := make(map[string]interface{})
+	for k, vs := range u.Ctx.Input.Context.Request.Form {
+		v := ""
+		if len(vs) > 0 {
+			v = vs[0]
+		}
+		tmp[k] = v
 	}
-	valid := validation.Validation{}
-	if ok, err := valid.Valid(po); err != nil {
-		u.ApiErrorf("failed to valid request: %v", err)
-	} else if !ok && len(valid.Errors) > 0 {
-		u.ApiError(valid.Errors[0].Key + ", " + valid.Errors[0].Message)
+	for k, v := range bodyMap {
+		tmp[k] = v
 	}
+	byts, err := json.Marshal(tmp)
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to encode form")
+	}
+	return byts, nil
 }
