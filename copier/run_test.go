@@ -7,6 +7,10 @@ import (
 	"github.com/jinzhu/copier"
 )
 
+//
+// https://github.com/jinzhu/copier
+//
+
 type User struct {
 	ID         int
 	Name       string
