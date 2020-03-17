@@ -20,7 +20,7 @@ type BaseController struct {
 func (u *BaseController) Prepare() {
 	u.Log = logs.New()
 	u.logRequest()
-	u.resolveBody()
+	u.parseBody()
 	if app, ok := u.AppController.(ControllerItf); ok {
 		app.Before()
 	}
@@ -31,6 +31,7 @@ func (u *BaseController) logRequest() {
 	if u.Ctx.Input.Context.Request.Form == nil {
 		_ = u.Ctx.Input.Context.Request.ParseForm()
 	}
+	u.Log.Debug("request method: ", u.Ctx.Request.Method)
 	u.Log.Debug("request form: ", u.Ctx.Input.Context.Request.Form)
 	u.Log.Debug("request body: ", string(u.Ctx.Input.RequestBody))
 }

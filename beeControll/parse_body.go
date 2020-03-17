@@ -1,21 +1,34 @@
 package beeControll
 
 import (
-	"encoding/json"
 	"strconv"
+
+	jsoniter "github.com/json-iterator/go"
 )
 
-// resolveBody 解析application/json参数
-func (u *BaseController) resolveBody() {
+// parseBody 解析application/json参数
+func (u *BaseController) parseBody() {
 	u.bodyStore = make(map[string]interface{})
-	if u.Ctx.Request.Method != "POST" {
-		return
+	// Parse Form
+	if u.Ctx.Input.Context.Request.Form == nil {
+		_ = u.Ctx.Input.Context.Request.ParseForm()
 	}
-	if len(u.Ctx.Input.RequestBody) <= 2 {
-		return
+	for k, vs := range u.Ctx.Input.Context.Request.Form {
+		v := ""
+		if len(vs) > 0 {
+			v = vs[0]
+		}
+		u.bodyStore[k] = v
 	}
-	if err := json.Unmarshal(u.Ctx.Input.RequestBody, &u.bodyStore); err != nil {
-		return
+	// Parse Body
+	if u.Ctx.Request.Method == "POST" && len(u.Ctx.Input.RequestBody) > 2 {
+		bodyMap := make(map[string]interface{})
+		if len(u.Ctx.Input.RequestBody) > 2 {
+			_ = jsoniter.Unmarshal(u.Ctx.Input.RequestBody, &bodyMap)
+		}
+		for k, v := range bodyMap {
+			u.bodyStore[k] = v
+		}
 	}
 }
 
