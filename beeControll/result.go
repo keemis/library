@@ -1,9 +1,13 @@
 package beeControll
 
 import (
-	"encoding/json"
 	"fmt"
+	"net/http"
+	"time"
 
+	"github.com/astaxie/beego"
+	jsoniter "github.com/json-iterator/go"
+	"github.com/json-iterator/go/extra"
 	"github.com/keemis/library/errs"
 )
 
@@ -83,15 +87,33 @@ func (u *BaseController) ApiStruct(err error) {
 	})
 }
 
-// apiOutput 返回结果
+// output 输出结果
 func (u *BaseController) output(data apiResult) {
-	if data.Code != 0 {
-		if byt, err := json.Marshal(data); err == nil {
-			u.Log.Warn("rpc response: %s", string(byt))
-		}
+	hasIndent := true
+	if beego.BConfig.RunMode == beego.PROD {
+		hasIndent = false
 	}
+	var content []byte
+	var err error
+	// use jsoniter ext
+	extra.RegisterFuzzyDecoders()
+	extra.RegisterTimeAsInt64Codec(time.Second)
+	if hasIndent {
+		content, err = jsoniter.MarshalIndent(data, "", "  ")
+	} else {
+		content, err = jsoniter.Marshal(data)
+	}
+	if err != nil {
+		http.Error(u.Ctx.Output.Context.ResponseWriter, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	// log
+	if data.Code != 0 {
+		u.Log.Warn("rpc response: %s", string(content))
+	}
+	// output
+	u.Ctx.Output.Header("Content-Type", "application/json; charset=utf-8")
 	u.Ctx.Output.Header("Server", "xService")
-	u.Data["json"] = data
-	u.ServeJSON()
+	u.Ctx.Output.Body(content)
 	u.StopRun()
 }
