@@ -32,21 +32,20 @@ func (u *BaseController) parseBody() {
 	}
 }
 
-// GetBodyString 获取application/json参数
+// GetBodyString 获取Query、Form、Body参数
 // 用法 & 作用 ：类同beego的 GetString()
 func (u *BaseController) GetBodyString(key string, def ...string) string {
-	res := ""
-	if len(def) > 0 {
-		res = def[0]
-	}
 	if val, ok := u.bodyStore[key].(string); ok {
 		return val
 	}
-	return res
+	if len(def) > 0 {
+		return def[0]
+	}
+	return ""
 }
 
-// GetBodyInt 获取application/json参数
-// 用法 & 作用 ：类同beego的 GetBodyInt()
+// GetBodyInt 获取Query、Form、Body参数
+// 用法 & 作用 ：类同beego的 GetInt()
 func (u *BaseController) GetBodyInt(key string, def ...int) int {
 	res := 0
 	if len(def) > 0 {
@@ -63,11 +62,17 @@ func (u *BaseController) GetBodyInt(key string, def ...int) int {
 		res = int(data)
 	case int:
 		res = data
+	case bool:
+		if data {
+			res = 1
+		} else {
+			res = 0
+		}
 	}
 	return res
 }
 
-// GetBodyInt64 获取application/json参数
+// GetBodyInt64 获取Query、Form、Body参数
 // 用法 & 作用 ：类同beego的 GetInt64()
 func (u *BaseController) GetBodyInt64(key string, def ...int64) int64 {
 	res := int64(0)
@@ -87,12 +92,18 @@ func (u *BaseController) GetBodyInt64(key string, def ...int64) int64 {
 		res = int64(data)
 	case int64:
 		res = data
+	case bool:
+		if data {
+			res = 1
+		} else {
+			res = 0
+		}
 	}
 	return res
 }
 
-// GetBodyFloat64 获取application/json参数
-// 用法 & 作用 ：类同beego的 GetInt64()
+// GetBodyFloat64 获取Query、Form、Body参数
+// 用法 & 作用 ：类同beego的 GetFloat()
 func (u *BaseController) GetBodyFloat64(key string, def ...float64) float64 {
 	var res float64
 	if len(def) > 0 {
@@ -113,12 +124,18 @@ func (u *BaseController) GetBodyFloat64(key string, def ...float64) float64 {
 		res = float64(data)
 	case int64:
 		res = float64(data)
+	case bool:
+		if data {
+			res = 1
+		} else {
+			res = 0
+		}
 	}
 	return res
 }
 
-// GetBodyBool 获取application/json参数
-// 用法 & 作用 ：类同beego的 GetBodyBool()
+// GetBodyBool 获取Query、Form、Body参数
+// 用法 & 作用 ：类同beego的 GetBool()
 func (u *BaseController) GetBodyBool(key string, def ...bool) bool {
 	res := false
 	if len(def) > 0 {
@@ -137,12 +154,17 @@ func (u *BaseController) GetBodyBool(key string, def ...bool) bool {
 		} else {
 			res = true
 		}
+	case float64:
+		if data == 0 {
+			res = false
+		} else {
+			res = true
+		}
 	}
 	return res
 }
 
-// GetBodyBool 获取application/json参数
-// 用法 & 作用 ：类同beego的 GetBodyItf()
+// GetBodyItf 获取Query、Form、Body参数
 func (u *BaseController) GetBodyItf(key string) (interface{}, bool) {
 	itf, ok := u.bodyStore[key]
 	return itf, ok
