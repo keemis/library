@@ -10,6 +10,9 @@ import (
 func (u *BaseController) parseBody() {
 	u.bodyStore = make(map[string]interface{})
 	// Parse Form
+	if u.Ctx == nil || u.Ctx.Input == nil || u.Ctx.Input.Context == nil {
+		return
+	}
 	if u.Ctx.Input.Context.Request.Form == nil {
 		_ = u.Ctx.Input.Context.Request.ParseForm()
 	}

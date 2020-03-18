@@ -12,9 +12,9 @@ import (
 //
 
 func TestRun(t *testing.T) {
-	c := cron.New()
-	c.AddFunc("* * * * *", func() {
-		t.Logf("Every Minute ")
+	c := cron.New(cron.WithSeconds())
+	c.AddFunc("* * * * * *", func() {
+		t.Logf("Every Second ")
 	})
 
 	c.Start()

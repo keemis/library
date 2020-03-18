@@ -28,6 +28,9 @@ func (u *BaseController) Prepare() {
 
 // logRequest 记录请求
 func (u *BaseController) logRequest() {
+	if u.Ctx == nil || u.Ctx.Input == nil || u.Ctx.Input.Context == nil {
+		return
+	}
 	if u.Ctx.Input.Context.Request.Form == nil {
 		_ = u.Ctx.Input.Context.Request.ParseForm()
 	}

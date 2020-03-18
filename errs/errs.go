@@ -52,12 +52,12 @@ func Errorf(format string, args ...interface{}) error {
 }
 
 // NewWithOption returns an error with some option
-func NewWithOption(opt ...Option) error {
+func NewWithOption(opts ...Option) error {
 	res := &fundamental{
 		stack: callers(),
 	}
-	for _, o := range opt {
-		o(res)
+	for _, opt := range opts {
+		opt(res)
 	}
 	return res
 }
@@ -76,7 +76,7 @@ func Wrap(err error, msg string) error {
 type Option func(*fundamental)
 
 // OptCode set error code
-func OptCode(code int) Option {
+func WithCode(code int) Option {
 	return func(o *fundamental) {
 		o.code = code
 	}
@@ -91,9 +91,9 @@ func GetCode(e error) int {
 }
 
 // OptMsg set error msg
-func OptMsg(msg string) Option {
+func WithMsg(format string, a ...interface{}) Option {
 	return func(o *fundamental) {
-		o.msg = msg
+		o.msg = fmt.Sprintf(format, a...)
 	}
 }
 
@@ -103,7 +103,7 @@ func GetMsg(e error) string {
 }
 
 // OptData set error data
-func OptData(data interface{}) Option {
+func WithData(data interface{}) Option {
 	return func(o *fundamental) {
 		o.data = data
 	}

@@ -21,22 +21,22 @@ type apiResult struct {
 // Option 设置选项
 type Option func(*apiResult)
 
-// OptCode 设置Code
-func OptCode(code int) Option {
+// WithCode 设置Code
+func WithCode(code int) Option {
 	return func(o *apiResult) {
 		o.Code = code
 	}
 }
 
-// OptMsg 设置Msg
-func OptMsg(msg string) Option {
+// WithMsg 设置Msg
+func WithMsg(format string, a ...interface{}) Option {
 	return func(o *apiResult) {
-		o.Msg = msg
+		o.Msg = fmt.Sprintf(format, a...)
 	}
 }
 
-// OptMsg 设置Data
-func OptData(data interface{}) Option {
+// WithData 设置Data
+func WithData(data interface{}) Option {
 	return func(o *apiResult) {
 		o.Data = data
 	}
@@ -62,18 +62,18 @@ func (u *BaseController) ApiError(msg string) {
 
 // apiErrorf RPC返回错误
 func (u *BaseController) ApiErrorf(format string, a ...interface{}) {
-	u.ApiError(fmt.Sprintf(format, a))
+	u.ApiError(fmt.Sprintf(format, a...))
 }
 
 // apiResult RPC返回
-func (u *BaseController) ApiResult(opt ...Option) {
+func (u *BaseController) ApiResult(opts ...Option) {
 	res := apiResult{
 		Code: 0,
 		Msg:  "success",
 		Data: nil,
 	}
-	for _, o := range opt {
-		o(&res)
+	for _, opt := range opts {
+		opt(&res)
 	}
 	u.output(res)
 }
