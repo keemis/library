@@ -98,7 +98,7 @@ func (b *messageBus) Close(topic string) {
 // New creates new MessageBus
 // handlerQueueSize sets buffered channel length per subscriber
 func New(handlerQueueSize int) MessageBus {
-	if handlerQueueSize == 0 {
+	if handlerQueueSize <= 0 {
 		panic("handlerQueueSize has to be greater then 0")
 	}
 

@@ -6,21 +6,21 @@ import (
 	"time"
 )
 
-var bus = New(100)
-
 func TestRun(t *testing.T) {
+	// 初始化MessageBus
+	Init(50)
 	// 订阅topic
-	a := NewMessage("Error_Key")
-	_ = NewEmail("Error_Key")
+	a := MessageSubscribe("Error_Key")
+	_ = EmailSubscribe("Error_Key")
 	// 发布topic
-	bus.Publish("Error_Key", "hello")
-	bus.Publish("Error_Key", "world")
-	bus.Publish("Error_Key", "simon")
+	Client().Publish("Error_Key", "hello")
+	Client().Publish("Error_Key", "world")
+	Client().Publish("Error_Key", "simon")
 
 	// 取消订阅
-	_ = bus.Unsubscribe("Error_Key", a.HandleEvent)
+	_ = Client().Unsubscribe("Error_Key", a.HandleEvent)
 	// 发布topic
-	bus.Publish("Error_Key", "php")
+	Client().Publish("Error_Key", "php")
 
 	time.Sleep(time.Hour)
 }
@@ -30,9 +30,9 @@ func TestRun(t *testing.T) {
 type Message struct {
 }
 
-func NewMessage(key string) *Message {
+func MessageSubscribe(key string) *Message {
 	o := &Message{}
-	bus.Subscribe(key, o.HandleEvent)
+	Client().Subscribe(key, o.HandleEvent)
 	return o
 }
 
@@ -45,9 +45,9 @@ func (d *Message) HandleEvent(data interface{}) {
 type Email struct {
 }
 
-func NewEmail(key string) *Email {
+func EmailSubscribe(key string) *Email {
 	o := &Email{}
-	bus.Subscribe(key, o.HandleEvent)
+	Client().Subscribe(key, o.HandleEvent)
 	return o
 }
 
