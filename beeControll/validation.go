@@ -14,7 +14,7 @@ import (
 func (u *BaseController) ValidForm(po interface{}) {
 	rv := reflect.ValueOf(po)
 	if rv.Kind() != reflect.Ptr || rv.IsNil() {
-		u.ApiError("param must be ptr")
+		u.ApiError("param must be ptr", -1000)
 	}
 	// encode Query、Form、Body
 	byts, err := json.Marshal(u.bodyStore)
@@ -34,6 +34,6 @@ func (u *BaseController) ValidForm(po interface{}) {
 	if ok, err := valid.Valid(po); err != nil {
 		u.ApiErrorf("failed to valid request: %v", err)
 	} else if !ok && len(valid.Errors) > 0 {
-		u.ApiError(valid.Errors[0].Key + ", " + valid.Errors[0].Message)
+		u.ApiError(valid.Errors[0].Key+", "+valid.Errors[0].Message, -1000)
 	}
 }
