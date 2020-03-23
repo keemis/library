@@ -15,7 +15,7 @@ var (
 	GitBranch  = "unknown"
 	BuildStamp = "unknown"
 	GoVersion  = "unknown"
-	SysUName   = "unknown"
+	SysUname   = "unknown"
 
 	VerOpt = flag.Bool("v", false, "Print application version")
 )
@@ -34,7 +34,7 @@ func init() {
 		fmt.Printf("\tGitBranch: %v \n", GitBranch)
 		fmt.Printf("\tBuildStamp: %v \n", stamp)
 		fmt.Printf("\tGoVersion: %v \n", GoVersion)
-		fmt.Printf("\tSysUname: %v \n", SysUName)
+		fmt.Printf("\tSysUname: %v \n", SysUname)
 		os.Exit(0)
 	}
 }

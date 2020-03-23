@@ -11,7 +11,7 @@ import (
 **2、导入：**
   
  ```
-go build -ldflags "-X 'github.com/keemis/library/flag.GitVersion=c53b81e' -X 'github.com/keemis/library/flag.GitBranch=develop' -X 'github.com/keemis/library/flag.BuildStamp=1584942580' -X 'github.com/keemis/library/flag.GoVersion=go version go1.13.4 linux/amd64' -X 'github.com/keemis/library/flag.SysUName=Linux testvm01 x86_64' "
+go build -ldflags "-X 'github.com/keemis/library/flag.GitVersion=c53b81e' -X 'github.com/keemis/library/flag.GitBranch=develop' -X 'github.com/keemis/library/flag.BuildStamp=1584942580' -X 'github.com/keemis/library/flag.GoVersion=go version go1.13.4 linux/amd64' -X 'github.com/keemis/library/flag.SysUname=Linux testvm01 x86_64' "
  ```
  
 **3、输出：**
