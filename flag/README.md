@@ -1,6 +1,6 @@
 # Golang 程序版本显示版本信息
 
-如何使用：
+1、引入：
  
 ```
 import (
@@ -8,8 +8,22 @@ import (
 )
 ```
  
-如何输出：
+2、导入：
+  
+ ```
+go build -ldflags "-X github.com/keemis/library/flag.GitVersion=36fe168"
+ ```
  
+3、输出：
+ 
+```
 ./app -v
  
+Version Information: 
+         GitVersion: c53b81e 
+         GitBranch: develop 
+         BuildStamp: 2020-03-23 13:37:40 
+         GoVersion: go version go1.13.4 linux/amd64 
+         SysUname: Linux wxtest062vm18 x86_64 
+```
  
