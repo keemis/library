@@ -1,6 +1,6 @@
-# Golang 程序版本显示版本信息
+# Golang 程序显示版本信息
 
-1、引入：
+**1、引入：**
  
 ```
 import (
@@ -8,13 +8,13 @@ import (
 )
 ```
  
-2、导入：
+**2、导入：**
   
  ```
 go build -ldflags "-X github.com/keemis/library/flag.GitVersion=36fe168"
  ```
  
-3、输出：
+**3、输出：**
  
 ```
 ./app -v
