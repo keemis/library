@@ -11,6 +11,7 @@ import (
 )
 
 var (
+	// 全局链接
 	connects struct {
 		store map[string]*gorm.DB
 		sync.RWMutex
@@ -40,15 +41,17 @@ func defaultConf() Conf {
 }
 
 // Init 初始化
-func Init(configs ...Conf) {
-	if len(configs) == 0 {
-		config := defaultConf()
-		configs = append(configs, config)
+func Init(confs ...Conf) {
+	if len(confs) == 0 {
+		conf := defaultConf()
+		confs = append(confs, conf)
 	}
 	connects.Lock()
-	connects.store = make(map[string]*gorm.DB)
+	if connects.store == nil {
+		connects.store = make(map[string]*gorm.DB)
+	}
 	connects.Unlock()
-	for _, conf := range configs {
+	for _, conf := range confs {
 		db, err := connect(conf)
 		if err != nil {
 			panic(err)

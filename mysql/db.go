@@ -12,8 +12,8 @@ type Orm struct {
 // Option 配置选项
 type Option func(*Orm)
 
-// OptLogger 设置日志对象
-func OptLogger(log logs.Logger) Option {
+// WithLogger 设置日志对象
+func WithLogger(log logs.Logger) Option {
 	return func(orm *Orm) {
 		orm.log = log
 	}
@@ -29,23 +29,26 @@ func New(options ...Option) Orm {
 }
 
 // DB 返回一个DB对象
-func (o Orm) DB(DbName ...string) *gorm.DB {
+func (o Orm) DB(dbNames ...string) *gorm.DB {
 	if len(connects.store) == 0 {
 		return nil
 	}
 	db := &gorm.DB{}
-	lens := len(DbName)
-	if lens == 0 {
+	lens := len(dbNames)
+	if lens == 0 && len(connects.store) == 1 {
+		connects.RLock()
 		for _, v := range connects.store {
 			db = v
+			break
 		}
+		connects.RUnlock()
 	} else if lens == 1 {
-		name := DbName[0]
-		if name == "" {
+		dbName := dbNames[0]
+		if dbName == "" {
 			return nil
 		}
 		connects.RLock()
-		tmp, ok := connects.store[name]
+		tmp, ok := connects.store[dbName]
 		connects.RUnlock()
 		if !ok {
 			return nil

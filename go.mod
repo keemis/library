@@ -4,6 +4,7 @@ go 1.14
 
 require (
 	github.com/astaxie/beego v1.12.1
+	github.com/jinzhu/gorm v1.9.12 // indirect
 	github.com/jordan-wright/email v0.0.0-20200307200233-de844847de93 // indirect
 	github.com/json-iterator/go v1.1.9
 	github.com/pkg/errors v0.8.0
