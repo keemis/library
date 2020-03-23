@@ -2,6 +2,7 @@ package beeControll
 
 import (
 	"github.com/astaxie/beego"
+	"github.com/astaxie/beego/context"
 	"github.com/keemis/library/logs"
 )
 
@@ -14,6 +15,10 @@ type BaseController struct {
 	beego.Controller
 	Log       logs.Logger
 	bodyStore map[string]interface{}
+}
+
+func (u *BaseController) Init(ct *context.Context, controllerName, actionName string, app interface{}) {
+	u.Controller.Init(ct, controllerName, actionName, app)
 }
 
 // Prepare 执行之前
@@ -38,3 +43,20 @@ func (u *BaseController) logRequest() {
 	u.Log.Debug("request form: ", u.Ctx.Input.Context.Request.Form)
 	u.Log.Debug("request body: ", string(u.Ctx.Input.RequestBody))
 }
+
+//
+//
+// Prepare()
+// Get()
+// Post()
+// Delete()
+// Put()
+// Head()
+// Patch()
+// Options()
+// Finish()
+// Render() error
+// XSRFToken() string
+// CheckXSRFCookie() bool
+// HandlerFunc(fn string) bool
+// URLMapping()
