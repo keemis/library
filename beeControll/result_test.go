@@ -22,7 +22,7 @@ func TestRun(t *testing.T) {
 		"id": 33,
 	})
 
-	req.ApiError("error message")
+	req.ApiError("error message", -1000)
 
 	req.ApiErrorf("error message: %v", "php")
 

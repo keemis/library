@@ -52,9 +52,9 @@ func (u *BaseController) ApiSuccess(data interface{}) {
 }
 
 // apiError RPC返回错误
-func (u *BaseController) ApiError(msg string) {
+func (u *BaseController) ApiError(msg string, code int) {
 	u.output(apiResult{
-		Code: -1000,
+		Code: code,
 		Msg:  msg,
 		Data: nil,
 	})
@@ -62,7 +62,7 @@ func (u *BaseController) ApiError(msg string) {
 
 // apiErrorf RPC返回错误
 func (u *BaseController) ApiErrorf(format string, a ...interface{}) {
-	u.ApiError(fmt.Sprintf(format, a...))
+	u.ApiError(fmt.Sprintf(format, a...), -1000)
 }
 
 // apiResult RPC返回
