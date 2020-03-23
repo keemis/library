@@ -24,6 +24,6 @@ Version Information:
          GitBranch: develop 
          BuildStamp: 2020-03-23 13:37:40 
          GoVersion: go version go1.13.4 linux/amd64 
-         SysUname: Linux wxtest062vm18 x86_64 
+         SysUname: Linux testvm01 x86_64 
 ```
  
