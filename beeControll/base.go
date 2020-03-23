@@ -2,7 +2,6 @@ package beeControll
 
 import (
 	"github.com/astaxie/beego"
-	"github.com/astaxie/beego/context"
 	"github.com/keemis/library/logs"
 )
 
@@ -15,10 +14,6 @@ type BaseController struct {
 	beego.Controller
 	Log       logs.Logger
 	bodyStore map[string]interface{}
-}
-
-func (u *BaseController) Init(ct *context.Context, controllerName, actionName string, app interface{}) {
-	u.Controller.Init(ct, controllerName, actionName, app)
 }
 
 // Prepare 执行之前
