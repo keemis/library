@@ -8,7 +8,7 @@ import (
 	"strings"
 )
 
-// Logger po
+// Logger 日志结构
 type Logger struct {
 	traceID       string
 	funcCallDepth int
@@ -17,15 +17,15 @@ type Logger struct {
 // Option 配置选项
 type Option func(*Logger)
 
-// SetTraceID 设置TraceID
-func SetTraceID(traceID string) Option {
+// WithTraceID 设置TraceID
+func WithTraceID(traceID string) Option {
 	return func(log *Logger) {
 		log.traceID = traceID
 	}
 }
 
-// SetFuncCallDepth 设置堆栈深度
-func SetFuncCallDepth(depth int) Option {
+// WithFuncCallDepth 设置堆栈深度
+func WithFuncCallDepth(depth int) Option {
 	return func(log *Logger) {
 		log.funcCallDepth = depth
 	}
