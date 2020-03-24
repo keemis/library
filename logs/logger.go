@@ -72,7 +72,7 @@ func (u Logger) Info(f interface{}, v ...interface{}) {
 
 // Debug [D] 7
 func (u Logger) Debug(f interface{}, v ...interface{}) {
-	logger.Debug(u.formatLog(f, v...))
+	logger.Debug("%v", u.formatLog(f, v...))
 }
 
 // formatLog format log
