@@ -131,7 +131,6 @@ func getValidFuncs(f reflect.StructField) (vfs []ValidFunc, err error) {
 		return
 	}
 	fs := strings.Split(tag, ";")
-
 	// message key
 	msgKey := f.Name
 	jsonTag := strings.TrimSpace(f.Tag.Get("json"))
@@ -141,9 +140,10 @@ func getValidFuncs(f reflect.StructField) (vfs []ValidFunc, err error) {
 		if start > 0 {
 			jsonKey = strings.TrimSpace(jsonTag[:start])
 		}
-		msgKey = fmt.Sprintf("%v(%v)", msgKey, jsonKey)
+		if len(jsonKey) > 0 {
+			msgKey = jsonKey
+		}
 	}
-
 	for _, vfunc := range fs {
 		var vf ValidFunc
 		if len(vfunc) == 0 {

@@ -29,6 +29,10 @@ func (u *BaseController) ValidForm(po interface{}) {
 			u.ApiErrorf("failed to decode request: %v", err)
 		}
 	}
+	// set default
+	if err := validation.SetDefault(po); err != nil {
+		u.ApiErrorf("failed to set form default: %v", err)
+	}
 	// valid
 	valid := validation.Validation{}
 	if ok, err := valid.Valid(po); err != nil {

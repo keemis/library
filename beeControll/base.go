@@ -38,20 +38,3 @@ func (u *BaseController) logRequest() {
 	u.Log.Debug("Request Form: %v", u.Ctx.Input.Context.Request.Form)
 	u.Log.Debug("Request Body: %v", string(u.Ctx.Input.RequestBody))
 }
-
-//
-//
-// Prepare()
-// Get()
-// Post()
-// Delete()
-// Put()
-// Head()
-// Patch()
-// Options()
-// Finish()
-// Render() error
-// XSRFToken() string
-// CheckXSRFCookie() bool
-// HandlerFunc(fn string) bool
-// URLMapping()
