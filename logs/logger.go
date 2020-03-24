@@ -72,7 +72,7 @@ func (u Logger) Info(f interface{}, v ...interface{}) {
 
 // Debug [D] 7
 func (u Logger) Debug(f interface{}, v ...interface{}) {
-	logger.Debug("%v", u.formatLog(f, v...))
+	logger.Debug(u.formatLog(f, v...))
 }
 
 // formatLog format log
@@ -80,7 +80,7 @@ func (u Logger) formatLog(f interface{}, v ...interface{}) string {
 	str := fmt.Sprintf("[%v] [%v] %v", u.funcCall(), u.traceID, u.format(f, v...))
 	str = strings.Replace(str, "\r\n", " ", -1)
 	str = strings.Replace(str, "\n", " ", -1)
-	str = strings.Replace(str, "\t", "", -1)
+	str = strings.Replace(str, "\t", " ", -1)
 	return str
 }
 
