@@ -34,9 +34,9 @@ func (u *BaseController) logRequest() {
 	if u.Ctx.Input.Context.Request.Form == nil {
 		_ = u.Ctx.Input.Context.Request.ParseForm()
 	}
-	u.Log.Debug("request method: ", u.Ctx.Request.Method)
-	u.Log.Debug("request form: ", u.Ctx.Input.Context.Request.Form)
-	u.Log.Debug("request body: ", string(u.Ctx.Input.RequestBody))
+	u.Log.Debug("Request Method: %v, Path: %v", u.Ctx.Request.Method, u.Ctx.Request.URL.Path)
+	u.Log.Debug("Request Form: %v", u.Ctx.Input.Context.Request.Form)
+	u.Log.Debug("Request Body: %v", string(u.Ctx.Input.RequestBody))
 }
 
 //
