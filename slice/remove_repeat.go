@@ -1,9 +1,9 @@
 package slice
 
 // 数组去重
-func RemoveRepeatInt(ids []int) []int {
+func RemoveRepeatInt(elems []int) []int {
 	var res []int
-	for _, v := range ids {
+	for _, v := range elems {
 		if len(res) == 0 {
 			res = append(res, v)
 		} else {
@@ -21,9 +21,9 @@ func RemoveRepeatInt(ids []int) []int {
 }
 
 // 数组去重
-func RemoveRepeatInt64(ids []int64) []int64 {
+func RemoveRepeatInt64(elems []int64) []int64 {
 	var res []int64
-	for _, v := range ids {
+	for _, v := range elems {
 		if len(res) == 0 {
 			res = append(res, v)
 		} else {
@@ -41,9 +41,9 @@ func RemoveRepeatInt64(ids []int64) []int64 {
 }
 
 // 数组去重
-func RemoveRepeatString(ids []string) []string {
+func RemoveRepeatString(elems []string) []string {
 	var res []string
-	for _, v := range ids {
+	for _, v := range elems {
 		if len(res) == 0 {
 			res = append(res, v)
 		} else {
