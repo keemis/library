@@ -11,6 +11,11 @@ import (
 	"github.com/keemis/library/errs"
 )
 
+func init() {
+	extra.RegisterFuzzyDecoders()
+	extra.RegisterTimeAsInt64Codec(time.Second)
+}
+
 // apiResult 接口返回结构
 type apiResult struct {
 	Code int         `json:"code"`
@@ -95,9 +100,6 @@ func (u *BaseController) output(data apiResult) {
 	}
 	var content []byte
 	var err error
-	// use jsoniter ext
-	extra.RegisterFuzzyDecoders()
-	extra.RegisterTimeAsInt64Codec(time.Second)
 	if hasIndent {
 		content, err = jsoniter.MarshalIndent(data, "", "  ")
 	} else {

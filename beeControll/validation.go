@@ -10,6 +10,11 @@ import (
 	"github.com/keemis/library/validation"
 )
 
+func init() {
+	extra.RegisterFuzzyDecoders()
+	extra.RegisterTimeAsInt64Codec(time.Second)
+}
+
 // ValidForm 校验、解析Query、Form、Body到Po
 func (u *BaseController) ValidForm(po interface{}) {
 	rv := reflect.ValueOf(po)
@@ -23,8 +28,6 @@ func (u *BaseController) ValidForm(po interface{}) {
 	}
 	// use jsoniter ext
 	if len(byts) > 2 {
-		extra.RegisterFuzzyDecoders()
-		extra.RegisterTimeAsInt64Codec(time.Second)
 		if err := jsoniter.Unmarshal(byts, po); err != nil {
 			u.ApiErrorf("failed to decode request: %v", err)
 		}
