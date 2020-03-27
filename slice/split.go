@@ -7,6 +7,10 @@ import (
 
 // 字符串转数组
 func SplitInt(s string, sep string) ([]int, error) {
+	s = strings.Trim(s, " ")
+	if s == "" {
+		return nil, nil
+	}
 	arr := SplitString(s, sep)
 	var res = make([]int, len(arr))
 	for k, v := range arr {
@@ -21,6 +25,10 @@ func SplitInt(s string, sep string) ([]int, error) {
 
 // 字符串转数组
 func SplitInt64(s string, sep string) ([]int64, error) {
+	s = strings.Trim(s, " ")
+	if s == "" {
+		return nil, nil
+	}
 	arr := SplitString(s, sep)
 	var res = make([]int64, len(arr))
 	for k, v := range arr {
