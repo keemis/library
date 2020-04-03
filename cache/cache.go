@@ -17,6 +17,9 @@ func Client() *freecache.Cache {
 
 // Init 初始化Cache
 func Init(cacheSize int) {
+	if client != nil {
+		return
+	}
 	if cacheSize <= 0 {
 		cacheSize = 10 * 1024 * 1024
 	}
