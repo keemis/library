@@ -115,7 +115,7 @@ func (u *BaseController) output(data apiResult) {
 	}
 	// output
 	u.Ctx.Output.Header("Content-Type", "application/json; charset=utf-8")
-	u.Ctx.Output.Header("Server", "xService")
+	u.Ctx.Output.Header("Server", "Server")
 	u.Ctx.Output.Body(content)
 	u.StopRun()
 }
