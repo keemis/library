@@ -12,6 +12,7 @@ require (
 	github.com/pkg/errors v0.8.0
 	github.com/robfig/cron/v3 v3.0.1
 	github.com/shiena/ansicolor v0.0.0-20151119151921-a422bbe96644 // indirect
+	github.com/shirou/gopsutil v2.20.3+incompatible
 	github.com/streadway/amqp v0.0.0-20200108173154-1c71cc93ed71
 	github.com/tidwall/gjson v1.6.0
 )

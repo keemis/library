@@ -5,11 +5,13 @@ import (
 )
 
 func TestUse(t *testing.T) {
-	/*
+	Init()
+}
 
-		import (
-			_ "github.com/keemis/library/flag" // 版本信息
-		)
+func TestPrintVer(t *testing.T) {
+	printVer()
+}
 
-	*/
+func TestPrintSystem(t *testing.T) {
+	printSystem()
 }
